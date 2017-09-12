@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'notification/hub/client/version'
+require 'notification_hub/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "notification-hub-client"
-  spec.version       = Notification::Hub::Client::VERSION
+  spec.version       = NotificationHub::VERSION
   spec.authors       = ["Wagner Bigal"]
   spec.email         = ["wagnerbigal@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = ""
+  spec.description   = ""
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -30,7 +30,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.required_ruby_version = '>= 2.1.5'
+
+  spec.add_dependency('activesupport', '~> 4.2')
+  spec.add_dependency('aws-sdk', '~> 1.66')
+
+  spec.add_development_dependency('bundler', '~> 1.13')
+  spec.add_development_dependency('rake', '~> 10.0')
+  spec.add_development_dependency('rspec', '~> 3.0')
+  spec.add_development_dependency('factory_girl', '~> 4.8')
 end
