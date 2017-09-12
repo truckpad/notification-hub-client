@@ -6,8 +6,8 @@ require 'notification_hub/version'
 Gem::Specification.new do |spec|
   spec.name          = "notification-hub-client"
   spec.version       = NotificationHub::VERSION
-  spec.authors       = ["Wagner Bigal"]
-  spec.email         = ["wagnerbigal@gmail.com"]
+  spec.authors       = ['Devs']
+  spec.email         = ["devs@truckpad.com.br"]
 
   spec.summary       = ""
   spec.description   = ""
