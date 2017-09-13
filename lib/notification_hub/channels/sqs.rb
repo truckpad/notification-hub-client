@@ -5,8 +5,6 @@ module NotificationHub
     class Sqs
       attr_reader :envelope
 
-      QUEUE_URL = "#{ENV['AWS_SQS_URL']}#{ENV['NOTIFICATION_DISPATCHER_QUEUE']}".freeze
-
       DEFAULT_MESSAGE_BODY_HASH = {
         priority: nil,
         default_locale: 'en',
@@ -25,15 +23,15 @@ module NotificationHub
 
       def client
         @client ||= AWS.sqs(
-          access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-          secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-          region: ENV['AWS_REGION']
+          access_key_id: NotificationHub.configuration.aws_access_key_id,
+          secret_access_key: NotificationHub.configuration.aws_secret_access_key,
+          region: NotificationHub.configuration.aws_region
         ).client
       end
 
       def message
         Hash[
-          queue_url: QUEUE_URL,
+          queue_url: Sqs.queue_url,
           message_body: message_body,
           message_attributes: message_attributes
         ]
@@ -43,7 +41,7 @@ module NotificationHub
         DEFAULT_MESSAGE_BODY_HASH.merge(
           job_id: SecureRandom.uuid,
           arguments: [envelope.to_json],
-          queue_name: ENV['NOTIFICATION_DISPATCHER_QUEUE']
+          queue_name: NotificationHub.configuration.notification_dispatcher_queue
         ).to_json
       end
 
@@ -54,6 +52,11 @@ module NotificationHub
             string_value: 'ActiveJob::QueueAdapters::ShoryukenAdapter::JobWrapper'
           ]
         ]
+      end
+
+      def self.queue_url
+        $queue_url ||= "#{NotificationHub.configuration.aws_sqs_url}"\
+                       "#{NotificationHub.configuration.notification_dispatcher_queue}"
       end
     end
   end

@@ -6,6 +6,8 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'notification-hub-client', git: 'https://github.com/truckpad/notification-hub-client'
+#OR
+gem 'notification-hub-client', git: 'https://github.com/truckpad/notification-hub-client', require: 'notification_hub'
 ```
 
 And then execute:
@@ -14,14 +16,17 @@ And then execute:
 
 ## Setup
 
-### Environment Variables
+```ruby
+# config/initializers/notification_hub_client.rb
+require 'notification_hub'
 
-```
-NOTIFICATION_DISPATCHER_QUEUE
-AWS_SQS_URL
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_REGION
+NotificationHub.configure do |config|
+  config.notification_dispatcher_queue = '[notification_dispatcher_queue]'
+  config.aws_sqs_url = '[aws_sqs_url]'
+  config.aws_access_key_id = '[aws_access_key_id]'
+  config.aws_secret_access_key = '[aws_secret_access_key]'
+  config.aws_region = '[aws_region]'
+end
 ```
 
 ## Usage
@@ -42,16 +47,16 @@ notification_hub = NotificationHub::Notification.new(
 
 push_notification = NotificationHub::Channels::Messages::PushNotification.new(
 	device_token: ['Receiver\'s Api-ID'],
-  title: 'Title',
-  link: 'Deep link',
-  body: 'Message'
+    title: 'Title',
+    link: 'Deep link',
+    body: 'Message'
 )
 
 notification_hub.append(push_notification)
 
 sms = NotificationHub::Channels::Messages::Sms.new(
 	phone_number: '+55DDNNNNNNNNN',
-  body: 'Message'
+    body: 'Message'
 )
 
 notification_hub.append(sms)
@@ -59,7 +64,6 @@ notification_hub.append(sms)
 # Sends push notification and sms
 notification_hub.notify(strategy: NotificationHub::Notification::Strategy::Multichannel)
 
-# Or
 # Sends the messages until the first one works
 notification_hub.notify(strategy: NotificationHub::Notification::Strategy::Fallback)
 ```
@@ -71,14 +75,14 @@ require 'notification_hub'
 
 push_notification = NotificationHub::Channels::Messages::PushNotification.new(
 	device_token: ['Receiver\'s Api-ID'],
-  title: 'Title',
-  link: 'Deep link',
-  body: 'Message'
+    title: 'Title',
+    link: 'Deep link',
+    body: 'Message'
 )
 
 sms = NotificationHub::Channels::Messages::Sms.new(
 	phone_number: '+55DDNNNNNNNNN',
-  body: 'Message'
+    body: 'Message'
 )
 
 notification_hub = NotificationHub::Notification.new(
@@ -94,7 +98,6 @@ notification_hub = NotificationHub::Notification.new(
 # Sends push notification and sms
 notification_hub.notify(strategy: NotificationHub::Notification::Strategy::Multichannel)
 
-# Or
 # Sends the messages until the first one works
 notification_hub.notify(strategy: NotificationHub::Notification::Strategy::Fallback)
 ```
@@ -102,7 +105,6 @@ notification_hub.notify(strategy: NotificationHub::Notification::Strategy::Fallb
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/truckpad/notification-hub-client. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
 
 ## License
 

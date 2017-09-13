@@ -7,6 +7,8 @@ RSpec.describe NotificationHub::Channels::Sqs do
   let(:messages) { [sms] }
   let(:envelope) {NotificationHub::Envelope::Base.new(messages: messages, options: {})}
 
+  let(:queue_url) { 'http://test/notification_dispatcher_queue' }
+
   let(:message_attributes) do
     Hash[
       'shoryuken_class' => Hash[
@@ -23,13 +25,13 @@ RSpec.describe NotificationHub::Channels::Sqs do
       job_class: 'NotificationHubJob',
       job_id: SecureRandom.uuid,
       arguments: [envelope.to_json],
-      queue_name: ENV['NOTIFICATION_DISPATCHER_QUEUE']
+      queue_name: NotificationHub.configuration.notification_dispatcher_queue
     ].to_json
   end
 
   let(:message) do
     Hash[
-      queue_url: 'http://test',
+      queue_url: queue_url,
       message_body: message_body,
       message_attributes: message_attributes
     ]
@@ -46,7 +48,7 @@ RSpec.describe NotificationHub::Channels::Sqs do
                   with(access_key_id: anything, secret_access_key: anything, region: anything).
                   and_return(sqs)
     allow(sqs).to receive(:client).and_return(sqs_client)
-    stub_const('NotificationHub::Channels::Sqs::QUEUE_URL', 'http://test')
+    stub_const('NotificationHub::Channels::Sqs::QUEUE_URL', NotificationHub.configuration.aws_sqs_url)
   end
 
   describe '#send' do
