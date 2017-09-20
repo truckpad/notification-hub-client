@@ -37,16 +37,16 @@ Send Push Notification and SMS
 require 'notification_hub'
 
 notification_hub = NotificationHub::Notification.new(
-	options: {
-		receiver_id: receiver.id,
-		receiver_type: 'Receiver',
-		reason_id: reason.id,
-		reason_type: 'Reason'
-	}
+  options: {
+    receiver_id: receiver.id,
+    receiver_type: 'Receiver',
+    reason_id: reason.id,
+    reason_type: 'Reason'
+  }
 )
 
 push_notification = NotificationHub::Channels::Messages::PushNotification.new(
-	device_token: ['Receiver\'s Api-ID'],
+  device_token: ['Receiver\'s Api-ID'],
     title: 'Title',
     link: 'Deep link',
     body: 'Message'
@@ -55,7 +55,7 @@ push_notification = NotificationHub::Channels::Messages::PushNotification.new(
 notification_hub.append(push_notification)
 
 sms = NotificationHub::Channels::Messages::Sms.new(
-	phone_number: '+55DDNNNNNNNNN',
+  phone_number: '+55DDNNNNNNNNN',
     body: 'Message'
 )
 
@@ -74,25 +74,25 @@ OR
 require 'notification_hub'
 
 push_notification = NotificationHub::Channels::Messages::PushNotification.new(
-	device_token: ['Receiver\'s Api-ID'],
+  device_token: ['Receiver\'s Api-ID'],
     title: 'Title',
     link: 'Deep link',
     body: 'Message'
 )
 
 sms = NotificationHub::Channels::Messages::Sms.new(
-	phone_number: '+55DDNNNNNNNNN',
+  phone_number: '+55DDNNNNNNNNN',
     body: 'Message'
 )
 
 notification_hub = NotificationHub::Notification.new(
-	messages: [push_notification, sms]
-	options: {
-		receiver_id: receiver.id,
-		receiver_type: 'Receiver',
-		reason_id: reason.id,
-		reason_type: 'Reason'
-	}
+  messages: [push_notification, sms]
+  options: {
+    receiver_id: receiver.id,
+    receiver_type: 'Receiver',
+    reason_id: reason.id,
+    reason_type: 'Reason'
+  }
 )
 
 # Sends push notification and sms
